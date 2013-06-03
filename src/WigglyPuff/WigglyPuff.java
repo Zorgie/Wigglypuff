@@ -37,9 +37,12 @@ public class WigglyPuff extends Robot
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// Replace the next line with any behavior you would like
-		fire(1);
-	}
+		if (e.getDistance() < 50 && getEnergy() > 50) {
+		  fire(3);
+    } else {
+      fire(1);
+	  }
+  }
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
@@ -57,4 +60,3 @@ public class WigglyPuff extends Robot
 		back(20);
 	}	
 }
-								
