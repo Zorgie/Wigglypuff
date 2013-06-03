@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
@@ -37,29 +40,45 @@ public class WigglyPuff extends AdvancedRobot {
 		// Robot main loop
 	}
 
+	public void onHitByBullet(HitByBulletEvent e) {
+		setTurnRight(25);
+		setAhead(99999 * moveDir);
+	}
 	
+	public void onHitRobot(HitRobotEvent e){
+		setTurnGunLeft(99999);
+	}
 	
+	public void onHitWall(HitWallEvent event){
+		setTurnRight(70);
+		setAhead(99999 * moveDir);
+	}
+
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if(findingClose > 0){
+		// Fire directly at target
+		if (e.getDistance() < shootThresh) {
+			fire(3);
+			return;
+		}
+		if (findingClose > 0) {
 			double leNice = e.getDistance();
-			if(leNice < closest){
+			if (leNice < closest) {
 				closest = leNice;
-				if(leNice < shootThresh){
+				if (leNice < shootThresh) {
 					fire(3);
 				}
 			}
 			long now = System.currentTimeMillis();
-			findingClose-=(double)(now-then)/1000;
+			findingClose -= (double) (now - then) / 1000;
 			return;
 		}
-		
-		if(rng.nextInt(15) == 0){
+
+		if (rng.nextInt(30) == 0) {
 			findingClose = 0.5;
 		}
-		
+
 		// Funky movements
-		setTurnRight(e.getBearing() + 75 + (rng.nextInt(30))
-				* moveDir);
+		setTurnRight(e.getBearing() + (75+30) * moveDir);
 
 		// If the bot has small energy drop,
 		// assume it fired
@@ -75,10 +94,6 @@ public class WigglyPuff extends AdvancedRobot {
 		gunDir = -gunDir;
 		setTurnGunRight(99999 * gunDir);
 
-		// Fire directly at target
-		if(e.getDistance() < shootThresh){
-			fire(3);
-		}
 		// Track the energy level
 		otherEnergy = e.getEnergy();
 	}
