@@ -6,6 +6,7 @@ import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
+import java.awt.*;
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
 
 /**
@@ -22,7 +23,7 @@ public class WigglyPuff extends Robot
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
 
-		// setColors(Color.red,Color.blue,Color.green); // body,gun,radar
+		setColors(Color.red,Color.blue,Color.green); // body,gun,radar
 
 		// Robot main loop
 		while(true) {
