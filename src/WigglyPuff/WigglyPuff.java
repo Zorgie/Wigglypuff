@@ -35,10 +35,24 @@ public class WigglyPuff extends Robot
 		}
 	}
 
+  private boolean veryClose(ScannedRobotEvent e) {
+    if (e.getDistance() < 100) {
+      return true;
+    }
+    return false;
+  }
+
   /*
    * Returns true f within fireing distance*/
-  private boolean withingDistance(ScannedRobotEvent e) {
+  private boolean withinLongestDistance(ScannedRobotEvent e) {
     if (e.getDistance() < 300) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean hasEnergy() {
+    if (getEnergy() > 50) {
       return true;
     }
     return false;
@@ -48,9 +62,12 @@ public class WigglyPuff extends Robot
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if (withingDistance(e) && getEnergy() > 50) {
+		double absoluteBearing = getHeading() + e.getBearing();
+		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
+		
+    if (veryClose(e) && hasEnergy()) {
 		  fire(3);
-    } else {
+    } else if (withinLongestDistance(e) && hasEnergy()) {
       fire(1);
 	  }
   }
