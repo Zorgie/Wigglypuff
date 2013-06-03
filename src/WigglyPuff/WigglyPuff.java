@@ -17,6 +17,11 @@ public class WigglyPuff extends Robot
 	 */
 	public void run() {
 		// Initialization of the robot should be put here
+		setBodyColor(Color.orange);
+		setGunColor(Color.orange);
+		setRadarColor(Color.red);
+		setScanColor(Color.red);
+		setBulletColor(Color.red);
 
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
