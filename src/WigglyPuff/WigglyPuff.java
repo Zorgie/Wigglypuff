@@ -35,11 +35,20 @@ public class WigglyPuff extends Robot
 		}
 	}
 
+  /*
+   * Returns true f within fireing distance*/
+  private boolean withingDistance() {
+    if (e.getDistance() < 300) {
+      return true;
+    }
+    return false;
+  }
+
 	/**
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if (e.getDistance() < 50 && getEnergy() > 50) {
+		if (withingDistance() && getEnergy() > 50) {
 		  fire(3);
     } else {
       fire(1);
