@@ -14,11 +14,15 @@ import java.awt.*;
  */
 public class WigglyPuff extends Robot
 {
-	/**
+  private double targetAngle;
+  private int tracking = 0;
+	
+  /**
 	 * run: BestTest's default behavior
 	 */
 	public void run() {
 		// Initialization of the robot should be put here
+    targetAngle = 0;
 
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
@@ -29,11 +33,17 @@ public class WigglyPuff extends Robot
 		while(true) {
 			// Replace the next 4 lines with any behavior you would like
 			ahead(100);
-			turnGunRight(360);
+      if (!isTracking())
+  			turnGunRight(360);
 			back(100);
-			turnGunRight(360);
+      if (!isTracking())
+			  turnGunRight(360);
 		}
 	}
+
+  private boolean isTracking() {
+    return false;
+  }
 
   private boolean veryClose(ScannedRobotEvent e) {
     if (e.getDistance() < 100) {
@@ -62,14 +72,29 @@ public class WigglyPuff extends Robot
 	 * onScannedRobot: What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+    
 		double absoluteBearing = getHeading() + e.getBearing();
 		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
-		
-    if (veryClose(e) && hasEnergy()) {
-		  fire(3);
-    } else if (withinLongestDistance(e) && hasEnergy()) {
-      fire(1);
-	  }
+
+    targetAngle = bearingFromGun;
+    
+    if (Math.abs(targetAngle) <= 3) {
+      turnGunRight(targetAngle);
+      
+      if (hasEnergy()) {
+        if (veryClose(e)) {
+            fire(3);
+        } else if (withinLongestDistance(e)) {
+          fire(0.4);
+        } else {
+			ahead(200);
+		}
+      }
+    }
+    
+     //else if (withinLongestDistance(e) && hasEnergy()) {
+      //fire(1);
+	  //}
   }
 
 	/**
