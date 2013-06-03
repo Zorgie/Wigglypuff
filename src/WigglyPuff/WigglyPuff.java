@@ -26,9 +26,9 @@ public class WigglyPuff extends Robot
 		// Robot main loop
 		while(true) {
 			// Replace the next 4 lines with any behavior you would like
-			ahead(100);
+			ahead(10);
 			turnGunRight(360);
-			back(100);
+			back(10);
 			turnGunRight(360);
 		}
 	}
